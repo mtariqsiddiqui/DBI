@@ -6,5 +6,9 @@
 	"subConfigurations": {
         "vibe-d:tls": "openssl-1.1"
     },
+	"stringImportPaths" :[
+		"views",
+		"configs"
+	],
 	"name": "dbi"
 }

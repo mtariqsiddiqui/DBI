@@ -1,0 +1,58 @@
+{
+    "ModelNames": [
+        "Bank",
+        "Biller",
+        "Aggregator"
+    ],
+    "Bank": {
+        "entity_type": "struct",
+        "fields": [
+            {
+                "name": "id",
+                "type": "string"
+            },
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "branch_code",
+                "type": "int"
+            }
+        ]
+    },
+    "Biller": {
+        "entity_type": "struct",
+        "fields": [
+            {
+                "name": "id",
+                "type": "string"
+            },
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "account_number",
+                "type": "int"
+            }
+        ]
+    },
+    "Aggregator": {
+        "entity_type": "struct",
+        "fields": [
+            {
+                "name": "id",
+                "type": "string"
+            },
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "account_number",
+                "type": "int"
+            }
+        ]
+    }
+}

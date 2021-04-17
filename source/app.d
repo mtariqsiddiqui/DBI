@@ -1,4 +1,7 @@
-import vibe.vibe;
+import vibe.d;
+import controller.api;
+import std.stdio;
+import std.json;
 
 void main()
 {
@@ -20,46 +23,17 @@ void main()
 
 	// Binds an instance of MyAPIImplementation to the /api/ prefix. All endpoints will have /api/ prefixed.
 	router.registerRestInterface(new MyAPIImplementation, "/api/");
+	// router.registerRestInterface(new ConfigParserImplementation, "/config/");
 
 	listenHTTP(settings, router);
-
+	
 	runApplication();
+
+
 }
 
+/// Rendering of Index URL
 void index(HTTPServerRequest req, HTTPServerResponse res)
 {
 	res.render!("index.dt");
-}
-
-// Dummy REST API
-
-/// Dummy user
-struct User
-{
-	/// First & Last Name
-	string name;
-	/// Age of this user
-	int age;
-}
-
-// API interface (required for registerRestInterface. Also makes API more easily documentable and allows for REST API clients)
-interface MyAPI
-{
-	User getUser();
-	User[] getUsers();
-}
-
-class MyAPIImplementation : MyAPI
-{
-	// GET /api/user
-	User getUser()
-	{
-		return User("John Doe", 21);
-	}
-
-	// GET /api/users
-	User[] getUsers()
-	{
-		return [User("John Doe", 21), User("Peter Doe", 23), User("Mary Doe", 22)];
-	}
 }
