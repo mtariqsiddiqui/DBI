@@ -2,21 +2,23 @@
     "ModelNames": [
         "Bank",
         "Biller",
-        "Aggregator"
+        "Account",
+        "Bill",
+        "Payment"
     ],
     "Bank": {
         "entity_type": "struct",
         "fields": [
             {
-                "name": "id",
+                "name": "bankId",
                 "type": "string"
             },
             {
-                "name": "name",
+                "name": "bankName",
                 "type": "string"
             },
             {
-                "name": "branch_code",
+                "name": "branchCode",
                 "type": "int"
             }
         ]
@@ -25,33 +27,79 @@
         "entity_type": "struct",
         "fields": [
             {
-                "name": "id",
+                "name": "billerId",
                 "type": "string"
             },
             {
-                "name": "name",
+                "name": "billerName",
                 "type": "string"
             },
             {
-                "name": "account_number",
+                "name": "bankAccountNumber",
+                "type": "string"
+            }
+        ]
+    },
+    "Account": {
+        "entity_type": "struct",
+        "fields": [
+            {
+                "name": "accountId",
+                "type": "string"
+            },
+            {
+                "name": "accountType",
+                "type": "string"
+            },
+            {
+                "name": "accountNumber",
+                "type": "string"
+            }
+        ]
+    },
+    "Bill": {
+        "entity_type": "struct",
+        "fields": [
+            {
+                "name": "billId",
+                "type": "string"
+            },
+            {
+                "name": "billerId",
+                "type": "string"
+            },
+            {
+                "name": "accountNumber",
+                "type": "string"
+            },
+            {
+                "name": "billAmount",
                 "type": "int"
             }
         ]
     },
-    "Aggregator": {
+    "Payment": {
         "entity_type": "struct",
         "fields": [
             {
-                "name": "id",
+                "name": "paymentId",
                 "type": "string"
             },
             {
-                "name": "name",
+                "name": "billerId",
                 "type": "string"
             },
             {
-                "name": "account_number",
+                "name": "billId",
+                "type": "string"
+            },
+            {
+                "name": "paymentAmount",
                 "type": "int"
+            },
+            {
+                "name": "bankId",
+                "type": "string"
             }
         ]
     }

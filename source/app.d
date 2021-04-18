@@ -28,8 +28,6 @@ void main()
 	listenHTTP(settings, router);
 	
 	runApplication();
-
-
 }
 
 /// Rendering of Index URL
