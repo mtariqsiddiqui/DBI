@@ -96,19 +96,12 @@ static string generateEntityInterfaces()
 
 	static foreach (index, key; c1["ModelNames"].array.map!(item => item).array)
 	{
-		// mixin("enum string k" ~ index.to!string ~ " = \"" ~ key.get!string ~ "\";"); 
-pragma(msg, key.get!string);
-
 		code = code ~ "interface " ~ key.get!string ~ "ApplicationInterface {\n ";
 		code = code ~ key.get!string ~ " get" ~ key.get!string ~ "(string id);\n";
 		code = code ~ key.get!string ~ "[] get" ~ key.get!string ~ "s(string id);\n";
 		code = code ~ "size_t create" ~ key.get!string ~ "(" ~ key.get!string ~ " e);\n";
 		code = code ~ "size_t update" ~ key.get!string ~ "(" ~ key.get!string ~ " e);\n";
 		code = code ~ "size_t delete" ~ key.get!string ~ "(" ~ key.get!string ~ " e);\n";
-
-
-
-
 		code = code ~ " } \n";
 	}
 	return code;
@@ -117,3 +110,47 @@ pragma(msg, key.get!string);
 pragma(msg, generateEntityInterfaces());
 
 mixin(generateEntityInterfaces());
+
+// interface BankApplicationInterface
+// {
+// 	Bank getBank(string id);
+// 	Bank[] getBanks(string id);
+// 	size_t createBank(Bank e);
+// 	size_t updateBank(Bank e);
+// 	size_t deleteBank(Bank e);
+// }
+
+/// Bank Implementation methods
+class BankApplicationInterfaceImplementation : BankApplicationInterface
+{
+	Bank getBank(string id)
+	{
+		Bank b = Bank("SAMBASARI_1", "SAMBA Financial Groups.", 1);
+		return b;
+	}
+
+	Bank[] getBanks(string id)
+	{
+		Bank[] banks = [
+			Bank("SAMBASARI_1", "SAMBA Financial Groups.", 1),
+			Bank("SAMBASARI_2", "SAMBA Financial Groups.", 2),
+			Bank("SAMBASARI_3", "SAMBA Financial Groups.", 3)
+		];
+		return banks;
+	}
+
+	size_t createBank(Bank e)
+	{
+		return 0;
+	}
+
+	size_t updateBank(Bank e)
+	{
+		return 0;
+	}
+
+	size_t deleteBank(Bank e)
+	{
+		return 0;
+	}
+}

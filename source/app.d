@@ -3,6 +3,8 @@ import controller.api;
 import std.stdio;
 import std.json;
 
+__gshared auto router = new URLRouter;
+
 void main()
 {
 	auto settings = new HTTPServerSettings;
@@ -15,7 +17,7 @@ void main()
 	// MongoDB Session Store - available via the dependency `mongostore`
 	settings.sessionStore = new MemorySessionStore;
 
-	auto router = new URLRouter;
+	// __gshared auto router = new URLRouter;
 	// calls index function when / is accessed
 	router.get("/", &index);
 	// Serves files out of public folder
@@ -23,7 +25,7 @@ void main()
 
 	// Binds an instance of MyAPIImplementation to the /api/ prefix. All endpoints will have /api/ prefixed.
 	router.registerRestInterface(new MyAPIImplementation, "/api/");
-	// router.registerRestInterface(new ConfigParserImplementation, "/config/");
+	router.registerRestInterface(new BankApplicationInterfaceImplementation, "/api/v2/");
 
 	listenHTTP(settings, router);
 	
