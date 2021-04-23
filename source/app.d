@@ -24,13 +24,22 @@ void main()
 	router.get("*", serveStaticFiles("./public/"));
 
 	// Binds an instance of MyAPIImplementation to the /api/ prefix. All endpoints will have /api/ prefixed.
-	router.registerRestInterface(new MyAPIImplementation, "/api/");
-	router.registerRestInterface(new BankApplicationInterfaceImplementation, "/api/v2/");
+	// router.registerRestInterface(new MyAPIImplementation, "/api/");
+	router.registerRestInterface(new BankApplicationInterfaceImplementation, "/api/");
+
+	// Testing Start
+	// MyAPIImplementation api = new MyAPIImplementation;
+	BankApplicationInterfaceImplementation bpi = new BankApplicationInterfaceImplementation;
+	// writeln(api.getUser());
+	writeln(bpi.getBank());
+	writeln(bpi.getBanks());
+	// Testing End
 
 	listenHTTP(settings, router);
 	
 	runApplication();
 }
+
 
 /// Rendering of Index URL
 void index(HTTPServerRequest req, HTTPServerResponse res)

@@ -5,7 +5,13 @@ import std.stdio;
 import std.conv;
 import std.json;
 import std.array;
+import std.typecons;
+
 import vibe.data.bson;
+
+import datasource;
+
+__gshared DataSource _ds = new DataSource;
 
 /// The parseEntities function read the JSON configuration and generated the code accordingly
 static string parseEntities()
@@ -22,7 +28,7 @@ static string parseEntities()
 		static foreach (k; c1[mixin("k" ~ index.to!string)]["fields"].array.map!(itm => itm).array)
 			code = code ~ getJsonValue(k, "type") ~ " " ~ getJsonValue(k, "name") ~ "; ";
 
-		code = code ~ " } \n";
+		code = code ~ "  @optional BsonObjectID _id; } \n";
 	}
 	return code;
 }
@@ -45,46 +51,11 @@ static string getJsonValue(JSONValue _obj, string key)
 pragma(msg, parseEntities());
 mixin(parseEntities()); // print parseEntities output to see the generated code
 
-/// Dummy user
-struct User
-{
-	/// First & Last Name
-	string name;
-	/// Age of this user
-	int age;
-}
-
 unittest
 {
 	auto b1 = Bank("SAMBASARI", "SAMBA Financials", 1);
 	assert(b1.id == "SAMBASARI");
 	assert(b1.branch_code == 1);
-}
-
-/// API interface (required for registerRestInterface. Also makes API more easily documentable and allows for REST API clients)
-interface MyAPI
-{
-	/// 
-	User getUser();
-	User[] getUsers();
-}
-
-/// Implementation of API Interface
-class MyAPIImplementation : MyAPI
-{
-	// GET /api/user
-	User getUser()
-	{
-		return User("John Doe", 21);
-	}
-
-	// GET /api/users
-	User[] getUsers()
-	{
-		return [
-			User("John Doe", 21), User("Peter Doe", 23), User("Mary Doe", 22)
-		];
-	}
 }
 
 /// The parseEntities function read the JSON configuration and generated the code accordingly
@@ -97,8 +68,8 @@ static string generateEntityInterfaces()
 	static foreach (index, key; c1["ModelNames"].array.map!(item => item).array)
 	{
 		code = code ~ "interface " ~ key.get!string ~ "ApplicationInterface {\n ";
-		code = code ~ key.get!string ~ " get" ~ key.get!string ~ "(string id);\n";
-		code = code ~ key.get!string ~ "[] get" ~ key.get!string ~ "s(string id);\n";
+		code = code ~ key.get!string ~ " get" ~ key.get!string ~ "();\n";
+		code = code ~ key.get!string ~ "[] get" ~ key.get!string ~ "s();\n";
 		code = code ~ "size_t create" ~ key.get!string ~ "(" ~ key.get!string ~ " e);\n";
 		code = code ~ "size_t update" ~ key.get!string ~ "(" ~ key.get!string ~ " e);\n";
 		code = code ~ "size_t delete" ~ key.get!string ~ "(" ~ key.get!string ~ " e);\n";
@@ -108,39 +79,35 @@ static string generateEntityInterfaces()
 }
 
 pragma(msg, generateEntityInterfaces());
-
 mixin(generateEntityInterfaces());
 
-// interface BankApplicationInterface
-// {
-// 	Bank getBank(string id);
-// 	Bank[] getBanks(string id);
-// 	size_t createBank(Bank e);
-// 	size_t updateBank(Bank e);
-// 	size_t deleteBank(Bank e);
-// }
+import std.traits;
+
+pragma(msg, [__traits(allMembers, Bank)]);
+pragma(msg, [__traits(allMembers, BankApplicationInterfaceImplementation)]);
+pragma(msg, [__traits(allMembers, BankApplicationInterface)]);
 
 /// Bank Implementation methods
 class BankApplicationInterfaceImplementation : BankApplicationInterface
 {
-	Bank getBank(string id)
+	Bank getBank()
 	{
-		Bank b = Bank("SAMBASARI_1", "SAMBA Financial Groups.", 1);
-		return b;
+		Bank bank;
+		bank._id = BsonObjectID.fromString("60808fc0a6314dd46c36224c");
+		bank = _ds.fetchOne!Bank(bank, "banks");
+		return bank;
 	}
 
-	Bank[] getBanks(string id)
+	Bank[] getBanks()
 	{
-		Bank[] banks = [
-			Bank("SAMBASARI_1", "SAMBA Financial Groups.", 1),
-			Bank("SAMBASARI_2", "SAMBA Financial Groups.", 2),
-			Bank("SAMBASARI_3", "SAMBA Financial Groups.", 3)
-		];
+		Bank bank;
+		Bank[] banks = _ds.fetchAll!Bank("banks");
 		return banks;
 	}
 
 	size_t createBank(Bank e)
 	{
+		_ds.insert!Bank(e, "banks");
 		return 0;
 	}
 
