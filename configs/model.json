@@ -7,6 +7,7 @@
         "Payment"
     ],
     "Bank": {
+        "collection_name" : "banks",
         "entity_type": "struct",
         "fields": [
             {
@@ -24,6 +25,7 @@
         ]
     },
     "Biller": {
+        "collection_name" : "billers",
         "entity_type": "struct",
         "fields": [
             {
@@ -41,6 +43,7 @@
         ]
     },
     "Account": {
+        "collection_name" : "accounts",
         "entity_type": "struct",
         "fields": [
             {
@@ -58,6 +61,7 @@
         ]
     },
     "Bill": {
+        "collection_name" : "bills",
         "entity_type": "struct",
         "fields": [
             {
@@ -79,6 +83,7 @@
         ]
     },
     "Payment": {
+        "collection_name" : "payments",
         "entity_type": "struct",
         "fields": [
             {

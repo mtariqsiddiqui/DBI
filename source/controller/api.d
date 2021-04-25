@@ -6,32 +6,13 @@ import std.conv;
 import std.json;
 import std.array;
 import std.typecons;
-
 import vibe.data.bson;
-
 import datasource;
 
 __gshared DataSource _ds = new DataSource;
 
-/// The parseEntities function read the JSON configuration and generated the code accordingly
-static string parseEntities()
-{
-	string code = "";
-	enum string config = import("model.json");
-	immutable auto c1 = parseJSON(config);
-	static foreach (index, key; c1["ModelNames"].array.map!(item => item).array)
-	{
-		mixin("enum string k" ~ index.to!string ~ " = \"" ~ key.get!string ~ "\";");
-		code = code ~ getJsonValue(c1[mixin("k" ~ index.to!string)],
-				"entity_type") ~ " " ~ key.get!string ~ " { ";
-
-		static foreach (k; c1[mixin("k" ~ index.to!string)]["fields"].array.map!(itm => itm).array)
-			code = code ~ getJsonValue(k, "type") ~ " " ~ getJsonValue(k, "name") ~ "; ";
-
-		code = code ~ "  @optional BsonObjectID _id; } \n";
-	}
-	return code;
-}
+enum string config = import("model.json");
+enum auto cfg = parseJSON(config);
 
 /// The getJsonValue function takes JSONValue object and return its value or _none for missing values.
 static string getJsonValue(JSONValue _obj, string key)
@@ -48,102 +29,76 @@ static string getJsonValue(JSONValue _obj, string key)
 	return "_none";
 }
 
-pragma(msg, parseEntities());
-mixin(parseEntities()); // print parseEntities output to see the generated code
-
-unittest
-{
-	auto b1 = Bank("SAMBASARI", "SAMBA Financials", 1);
-	assert(b1.id == "SAMBASARI");
-	assert(b1.branch_code == 1);
-}
-
 /// The parseEntities function read the JSON configuration and generated the code accordingly
-static string generateEntityInterfaces()
+static string parseEntities()
 {
 	string code = "";
-	enum string config = import("model.json");
-	immutable auto c1 = parseJSON(config);
-
-	static foreach (index, key; c1["ModelNames"].array.map!(item => item).array)
+	static foreach (index, key; cfg["ModelNames"].array.map!(item => item).array)
 	{
-		code = code ~ "interface " ~ key.get!string ~ "ApplicationInterface {\n ";
-		code = code ~ key.get!string ~ " get" ~ key.get!string ~ "(string eid);\n";
-		code = code ~ key.get!string ~ "[] get" ~ key.get!string ~ "s();\n";
-		code = code ~ "size_t create" ~ key.get!string ~ "(" ~ key.get!string ~ " e);\n";
-		code = code ~ "size_t update" ~ key.get!string ~ "(" ~ key.get!string ~ " e);\n";
-		code = code ~ "size_t delete" ~ key.get!string ~ "(" ~ key.get!string ~ " e);\n";
-		code = code ~ " } \n";
+		mixin("enum string k" ~ index.to!string ~ " = \"" ~ key.get!string ~ "\";");
+		code = code ~ getJsonValue(cfg[mixin("k" ~ index.to!string)], "entity_type") 
+					~ " " ~ key.get!string ~ " { ";
+
+		static foreach (k; cfg[mixin("k" ~ index.to!string)]["fields"].array.map!(itm => itm).array)
+			code = code ~ getJsonValue(k, "type") ~ " " ~ getJsonValue(k, "name") ~ "; ";
+
+		code = code ~ "  @optional BsonObjectID _id; } \n";
 	}
 	return code;
 }
 
-pragma(msg, generateEntityInterfaces());
-mixin(generateEntityInterfaces());
-
-import std.traits;
-
-pragma(msg, [__traits(allMembers, Bank)]);
-// pragma(msg, [__traits(allMembers, BankApplicationInterfaceImplementation)]);
-// pragma(msg, [__traits(allMembers, BankApplicationInterface)]);
-
-template ApiImplementation(alias implName, string collection)
+/// Template for generating REST API interfaces
+template ApiInterface(string implName)
 {
-	// enum string collection = "banks";
-	enum string ApiImplementation =  "class " ~ implName ~ "ApplicationInterfaceImplementation : " ~ implName ~ "ApplicationInterface" ~
-	"{" ~
-	implName ~ " get" ~ implName ~ "(string eid) { " ~
-	implName ~ " e;" ~
-	"e._id = BsonObjectID.fromString(eid);" ~
-	"e = _ds.fetchOne!" ~ implName ~ "(e, \"" ~ collection ~ "\");" ~
-	"return e; } " ~
-	implName ~ "[] get" ~ implName ~ "s() { " ~
-	implName ~ "[] e = _ds.fetchAll!" ~ implName ~ "(\"" ~ collection ~ "\"); " ~
-	" return e; } " ~
-	" size_t create" ~ implName ~ "(" ~ implName ~ " e) { " ~
-	"_ds.insert!" ~ implName ~ "(e, \"" ~ collection ~ "\"); " ~
-	" return 0; } " ~
-	" size_t update" ~ implName ~ "(" ~ implName ~ " e) { return 0; } " ~
-	" size_t delete" ~ implName ~ "(" ~ implName ~ " e) { return 0;	} " ~
-	"}" ;
+	enum string ApiInterface = "interface " ~ implName ~ "ApplicationInterface {\n "
+		~ implName ~ " get" ~ implName ~ "(string eid);\n"
+		~ implName ~ "[] get" ~ implName ~ "s();\n"
+		~ "size_t create" ~ implName ~ "(" ~ implName ~ " e);\n"
+		~ "size_t update" ~ implName ~ "(" ~ implName ~ " e);\n"
+		~ "size_t delete" ~ implName ~ "(" ~ implName ~ " e); } \n";
 
-	pragma(msg, ApiImplementation);
-
+	pragma(msg, ApiInterface);
 }
 
-mixin(ApiImplementation!("Bank",  "banks"));
-mixin(ApiImplementation!("Biller",  "billers"));
+/// Template for generation REST API interface implementation classes
+template ApiImplementation(string implName, string collection)
+{
+	// enum string collection = "banks";
+	enum string ApiImplementation = "class " ~ implName ~ "ApplicationInterfaceImplementation : " ~ implName ~ "ApplicationInterface \n" 
+		~ "{\n" ~ implName ~ " get" ~ implName ~ "(string eid) { \n"
+		~ implName ~ " e; \n" ~ "e._id = BsonObjectID.fromString(eid); \n"
+		~ "e = _ds.fetchOne!" ~ implName ~ "(e, \"" ~ collection ~ "\"); \n"
+		~ "return e; } \n" ~ implName ~ "[] get" ~ implName ~ "s() { \n"
+		~ implName ~ "[] e = _ds.fetchAll!" ~ implName ~ "(\"" ~ collection
+		~ "\"); \n" ~ " return e; } \n" 
+		~ " size_t create" ~ implName
+		~ "(" ~ implName ~ " e) { \n" ~ "_ds.insert!" 
+		~ implName ~ "(e, \""
+		~ collection ~ "\"); \n" ~ " return 0; } \n" 
+		~ " size_t update" ~ implName ~ "(" ~ implName ~ " e) { return 0; } \n" 
+		~ " size_t delete" ~ implName ~ "(" ~ implName ~ " e) { return 0; } \n }";
 
-/// Bank Implementation methods
-// class BankApplicationInterfaceImplementation : BankApplicationInterface
-// {
-// 	Bank getBank(string eid)
-// 	{
-// 		Bank bank;
-// 		bank._id = BsonObjectID.fromString(bid);
-// 		bank = _ds.fetchOne!Bank(bank, "banks");
-// 		return bank;
-// 	}
+	pragma(msg, ApiImplementation);
+}
 
-// 	Bank[] getBanks()
-// 	{
-// 		Bank[] banks = _ds.fetchAll!Bank("banks");
-// 		return banks;
-// 	}
+pragma(msg, parseEntities());
+mixin(parseEntities()); // print parseEntities output to see the generated code
 
-// 	size_t createBank(Bank e)
-// 	{
-// 		_ds.insert!Bank(e, "banks");
-// 		return 0;
-// 	}
+static foreach (index, key; cfg["ModelNames"].array.map!(item => item).array)
+{
+	mixin("enum string k" ~ index.to!string ~ " = \"" ~ key.get!string ~ "\";");
+	
+	mixin(ApiInterface!(mixin("\"" ~ key.get!string ~ "\"")));
 
-// 	size_t updateBank(Bank e)
-// 	{
-// 		return 0;
-// 	}
+	mixin(ApiImplementation!(
+		mixin("\"" ~ key.get!string ~ "\""),
+		mixin("\"" ~
+		getJsonValue(cfg[mixin("k" ~ index.to!string)], "collection_name")
+		 ~ "\"")
+	));
+}
 
-// 	size_t deleteBank(Bank e)
-// 	{
-// 		return 0;
-// 	}
-// }
+import std.traits;
+pragma(msg, [__traits(allMembers, Bank)]);
+pragma(msg, [__traits(allMembers, BankApplicationInterfaceImplementation)]);
+pragma(msg, [__traits(allMembers, BankApplicationInterface)]);

@@ -26,7 +26,7 @@ class DataSource
             {
                 enum string code = "if ( is ( typeof ( t." ~ key ~ " is null ) ) ) "
                     ~ "b[key] = BsonObjectID.generate();" ~ " else " ~ "b[key] = t." ~ key ~ ";";
-                pragma(msg, code);
+                // pragma(msg, code);
                 mixin(code);
             }
             // if member is type of Integer or Float and > 0
@@ -34,7 +34,7 @@ class DataSource
                 ~ " b[key] = t." ~ key ~ ";" ~ " static if(isSomeString!(typeof(t."
                 ~ key ~ ")) || isSomeChar!(typeof(t." ~ key ~ "))) " ~ " if(t."
                 ~ key ~ " !is null) " ~ " b[key] = t." ~ key ~ ";";
-            pragma(msg, code2);
+            // pragma(msg, code2);
             mixin(code2);
         }
         return b;
