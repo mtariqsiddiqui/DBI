@@ -68,7 +68,7 @@ static string generateEntityInterfaces()
 	static foreach (index, key; c1["ModelNames"].array.map!(item => item).array)
 	{
 		code = code ~ "interface " ~ key.get!string ~ "ApplicationInterface {\n ";
-		code = code ~ key.get!string ~ " get" ~ key.get!string ~ "();\n";
+		code = code ~ key.get!string ~ " get" ~ key.get!string ~ "(string eid);\n";
 		code = code ~ key.get!string ~ "[] get" ~ key.get!string ~ "s();\n";
 		code = code ~ "size_t create" ~ key.get!string ~ "(" ~ key.get!string ~ " e);\n";
 		code = code ~ "size_t update" ~ key.get!string ~ "(" ~ key.get!string ~ " e);\n";
@@ -84,40 +84,66 @@ mixin(generateEntityInterfaces());
 import std.traits;
 
 pragma(msg, [__traits(allMembers, Bank)]);
-pragma(msg, [__traits(allMembers, BankApplicationInterfaceImplementation)]);
-pragma(msg, [__traits(allMembers, BankApplicationInterface)]);
+// pragma(msg, [__traits(allMembers, BankApplicationInterfaceImplementation)]);
+// pragma(msg, [__traits(allMembers, BankApplicationInterface)]);
+
+template ApiImplementation(alias implName, string collection)
+{
+	// enum string collection = "banks";
+	enum string ApiImplementation =  "class " ~ implName ~ "ApplicationInterfaceImplementation : " ~ implName ~ "ApplicationInterface" ~
+	"{" ~
+	implName ~ " get" ~ implName ~ "(string eid) { " ~
+	implName ~ " e;" ~
+	"e._id = BsonObjectID.fromString(eid);" ~
+	"e = _ds.fetchOne!" ~ implName ~ "(e, \"" ~ collection ~ "\");" ~
+	"return e; } " ~
+	implName ~ "[] get" ~ implName ~ "s() { " ~
+	implName ~ "[] e = _ds.fetchAll!" ~ implName ~ "(\"" ~ collection ~ "\"); " ~
+	" return e; } " ~
+	" size_t create" ~ implName ~ "(" ~ implName ~ " e) { " ~
+	"_ds.insert!" ~ implName ~ "(e, \"" ~ collection ~ "\"); " ~
+	" return 0; } " ~
+	" size_t update" ~ implName ~ "(" ~ implName ~ " e) { return 0; } " ~
+	" size_t delete" ~ implName ~ "(" ~ implName ~ " e) { return 0;	} " ~
+	"}" ;
+
+	pragma(msg, ApiImplementation);
+
+}
+
+mixin(ApiImplementation!("Bank",  "banks"));
+mixin(ApiImplementation!("Biller",  "billers"));
 
 /// Bank Implementation methods
-class BankApplicationInterfaceImplementation : BankApplicationInterface
-{
-	Bank getBank()
-	{
-		Bank bank;
-		bank._id = BsonObjectID.fromString("60808fc0a6314dd46c36224c");
-		bank = _ds.fetchOne!Bank(bank, "banks");
-		return bank;
-	}
+// class BankApplicationInterfaceImplementation : BankApplicationInterface
+// {
+// 	Bank getBank(string eid)
+// 	{
+// 		Bank bank;
+// 		bank._id = BsonObjectID.fromString(bid);
+// 		bank = _ds.fetchOne!Bank(bank, "banks");
+// 		return bank;
+// 	}
 
-	Bank[] getBanks()
-	{
-		Bank bank;
-		Bank[] banks = _ds.fetchAll!Bank("banks");
-		return banks;
-	}
+// 	Bank[] getBanks()
+// 	{
+// 		Bank[] banks = _ds.fetchAll!Bank("banks");
+// 		return banks;
+// 	}
 
-	size_t createBank(Bank e)
-	{
-		_ds.insert!Bank(e, "banks");
-		return 0;
-	}
+// 	size_t createBank(Bank e)
+// 	{
+// 		_ds.insert!Bank(e, "banks");
+// 		return 0;
+// 	}
 
-	size_t updateBank(Bank e)
-	{
-		return 0;
-	}
+// 	size_t updateBank(Bank e)
+// 	{
+// 		return 0;
+// 	}
 
-	size_t deleteBank(Bank e)
-	{
-		return 0;
-	}
-}
+// 	size_t deleteBank(Bank e)
+// 	{
+// 		return 0;
+// 	}
+// }

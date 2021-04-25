@@ -31,7 +31,7 @@ void main()
 	// MyAPIImplementation api = new MyAPIImplementation;
 	BankApplicationInterfaceImplementation bpi = new BankApplicationInterfaceImplementation;
 	// writeln(api.getUser());
-	writeln(bpi.getBank());
+	writeln(bpi.getBank("60808fc0a6314dd46c36224c"));
 	writeln(bpi.getBanks());
 	// Testing End
 
