@@ -22,20 +22,25 @@ class DataSource
         Bson b = Bson.emptyObject;
         foreach (key; __traits(allMembers, T))
         {
-            static if (key == "_id")
+            static if (key == "_id" && typeid(mixin("t."~key)) == typeid(vibe.data.bson.BsonObjectID))
             {
-                enum string code = "if ( is ( typeof ( t." ~ key ~ " is null ) ) ) "
+                enum string code = "if (! t." ~ key ~ ".valid ) "
                     ~ "b[key] = BsonObjectID.generate();" ~ " else " ~ "b[key] = t." ~ key ~ ";";
                 // pragma(msg, code);
                 mixin(code);
             }
-            // if member is type of Integer or Float and > 0
-            enum string code2 = " static if(__traits(isArithmetic, typeof(t." ~ key ~ "))) " ~ " if(t." ~ key ~ " != 0) "
-                ~ " b[key] = t." ~ key ~ ";" ~ " static if(isSomeString!(typeof(t."
-                ~ key ~ ")) || isSomeChar!(typeof(t." ~ key ~ "))) " ~ " if(t."
-                ~ key ~ " !is null) " ~ " b[key] = t." ~ key ~ ";";
-            // pragma(msg, code2);
-            mixin(code2);
+            else
+            {
+                // if member is type of Integer or Float and > 0
+                enum string code2 = " static if(__traits(isArithmetic, typeof(t." ~ key ~ "))) " 
+                    ~ " if(t." ~ key ~ " != 0) "
+                    ~ " b[key] = t." ~ key ~ ";" 
+                    ~ " static if(isSomeString!(typeof(t." ~ key ~ ")) || isSomeChar!(typeof(t." ~ key ~ ")))"
+                    ~ " if(t." ~ key ~ " !is null) "
+                    ~ " b[key] = t." ~ key ~ ";";
+                // pragma(msg, code2);
+                mixin(code2);
+            }
         }
         return b;
     }
@@ -46,17 +51,10 @@ class DataSource
         auto _client = connectMongoDB("127.0.0.1", 27017);
         auto _db = _client.getDatabase("db1");
 
-        write("This is Prepared BSON : ");
-        writeln(b);
-
         Nullable!T e = _db[collection].findOne!T(b);
-        writeln(e);
-
         if (e.isNull)
-        {
-            e = e.init;
-            writeln(e);
-        }
+            e = t;
+
         return e;
     }
 
@@ -97,13 +95,42 @@ class DataSource
         return 0;
     }
 
-    size_t update(T)(T t)
+    size_t update(T)(T t, string collection)
     {
+        Bson bd = prepareBsonData!T(t);
+        try
+        {
+            auto _client = connectMongoDB("127.0.0.1", 27017);
+            auto _db = _client.getDatabase("db1");
+        
+            _db[collection].update(["_id" : t._id],bd, UpdateFlags.upsert);
+            _db.destroy();
+            _client.destroy();
+        }
+        catch (MongoDBException e)
+        {
+            writeln("Mongo DB Exception occur. Message is " ~ e.message);
+        }
         return 0;
     }
 
-    size_t remove(T)(T t)
+    size_t remove(T)(T t, string collection)
     {
+        Bson bd = prepareBsonData!T(t);
+        try
+        {
+            auto _client = connectMongoDB("127.0.0.1", 27017);
+            auto _db = _client.getDatabase("db1");
+            writeln(t._id);
+            _db[collection].remove(["_id" : t._id]);
+
+            _db.destroy();
+            _client.destroy();
+        }
+        catch (MongoDBException e)
+        {
+            writeln("Mongo DB Exception occur. Message is " ~ e.message);
+        }
         return 0;
     }
 }

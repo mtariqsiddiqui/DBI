@@ -1,14 +1,29 @@
+
 doctype html
-html
-  head
-    title Design by Introspection
-    link(rel="stylesheet", href="/css/style.css")
-  body
-    h1 Hello World!
-    p Edit
-      code views/index.dt
-      | to edit this template
-    a(href="/api/users") Example REST API
-    h1 Testing JSON Parser
-    p Click to test JSON Parsing.
-    a(href="/config/parse") Test Link
+head
+	title Design by Introspection - Sample Project
+	meta(charset='utf-8')
+	meta(name='viewport', content='width=device-width, initial-scale=1')
+	link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css')
+	script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')
+	script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js')
+nav.navbar.navbar-default
+	.container-fluid
+		.navbar-header
+			a.navbar-brand(href='#') Dlang - Design by Introspection
+		ul.nav.navbar-nav
+			li.active
+				a(href='#') Home
+			li
+				a(href='#') Page 1
+			li
+				a(href='#') Page 2
+			li
+				a(href='#') Page 3
+.container
+	h3 Basic Navbar Example
+	p A navigation bar is a navigation header that is placed at the top of the page.
+.container
+	.jumbotron
+		h1 DbI Sample Project
+		p This project is developed using D programming language, utilising its metaprogramming capabilities including templates, __traits and some other compile time features.
