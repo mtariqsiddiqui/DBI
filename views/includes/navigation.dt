@@ -1,0 +1,6 @@
+// Navigation Diet Temmplate
+- import controller.api; import std.algorithm; import std.json; import std.array;
+- foreach (index, key; navcfg["NavigationLinks"].array.map!(item => item).array)
+    - string href = getJsonValue(key, "href"); 
+    - string title = getJsonValue(key, "title");
+    a.nav-link(href=href) #{title}

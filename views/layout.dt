@@ -1,0 +1,9 @@
+doctype html
+html(lang="en")
+    head
+        include ./includes/header.dt
+    body
+        include ./includes/sidebar.dt
+
+        block main_content_body
+            p No default content is provided.

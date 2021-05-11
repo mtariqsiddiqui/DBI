@@ -7,18 +7,14 @@ import std.json;
 import std.array;
 import std.typecons;
 import std.traits;
-
-import vibe.d;
-
-// import vibe.data.bson;
-
+import vibe.data.bson;
 import datasource;
 import templates;
 import std.uni : toLower;
 
 __gshared DataSource _ds = new DataSource;
-__gshared enum string config = import("model.json");
-__gshared enum auto cfg = parseJSON(config);
+__gshared enum auto cfg = parseJSON(import("model.json"));
+__gshared enum auto navcfg = parseJSON(import("navigation.json"));
 
 /// The getJsonValue function takes JSONValue object and return its value or _none for missing values.
 static string getJsonValue(JSONValue _obj, string key)
@@ -55,7 +51,7 @@ static string parseEntities()
 
 pragma(msg, parseEntities());
 mixin(parseEntities()); // print parseEntities output to see the generated code
-
+// Parsing the configuration and creating REST API Interfaces and its Implementation classes during compilation
 static foreach (index, key; cfg["ModelNames"].array.map!(item => item).array)
 {
 	mixin("enum string k" ~ index.to!string ~ " = \"" ~ key.get!string ~ "\";");
@@ -65,7 +61,7 @@ static foreach (index, key; cfg["ModelNames"].array.map!(item => item).array)
 	mixin(ApiImplementation!(mixin("\"" ~ key.get!string ~ "\""),
 			mixin("\"" ~ getJsonValue(cfg[mixin("k" ~ index.to!string)], "collection_name") ~ "\"")));
 
-	// pragma(msg, [__traits(allMembers, mixin(key.get!string))]);
-	// pragma(msg, [__traits(allMembers, mixin(key.get!string ~ "ApplicationInterface"))]);
-	// pragma(msg, [__traits(allMembers, mixin(key.get!string ~ "ApplicationInterfaceImplementation"))]);
+	pragma(msg, [__traits(allMembers, mixin(key.get!string))]);
+	pragma(msg, [__traits(allMembers, mixin(key.get!string ~ "ApplicationInterface"))]);
+	pragma(msg, [__traits(allMembers, mixin(key.get!string ~ "ApplicationInterfaceImplementation"))]);
 }

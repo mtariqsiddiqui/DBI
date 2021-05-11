@@ -16,17 +16,20 @@ void main()
 	auto router = new URLRouter;
 	// calls index function when / is accessed
 	router.get("/", &index);
-	router.get("/test", &testing);
+	// router.get("/public*", &testing);
 	// Serves files out of public folder
-	router.get("*", serveStaticFiles("./public/"));
+	// router.get("*", serveStaticFiles("./public/"));
+
+	auto fsettings = new HTTPFileServerSettings;
+	fsettings.serverPathPrefix = "/static";
+	router.get("/static/*", serveStaticFiles("public/", fsettings));
+
 
 	// Binds an instance of API-Implementation to the /api-url/ prefix. 
 	static foreach (index, key; cfg["ModelNames"].array.map!(item => item).array)
 	{
-		mixin(RegisterRestRoute!(
-			mixin("\"" ~ key.get!string ~ "ApplicationInterfaceImplementation" ~ "\""),
-			mixin("\"" ~ toLower(key.get!string) ~ "-api\"")
-		));
+		mixin(RegisterRestRoute!(mixin("\"" ~ key.get!string ~ "ApplicationInterfaceImplementation" ~ "\""),
+				mixin("\"" ~ toLower(key.get!string) ~ "-api\"")));
 	}
 
 	listenHTTP(settings, router);
@@ -42,5 +45,12 @@ void index(HTTPServerRequest req, HTTPServerResponse res)
 /// Rendering of Index URL
 void testing(HTTPServerRequest req, HTTPServerResponse res)
 {
-	res.render!("test.dt");
+	writeln(req.fullURL);
+	writeln(req.requestURL);
+	writeln(req.requestURI);
+	string view = req.requestURL;
+	import std.string;
+	view = chompPrefix(view, "/") ~ ".dt";
+	writeln(view);
+	res.render!("testing.dt");
 }

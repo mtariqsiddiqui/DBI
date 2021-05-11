@@ -1,0 +1,25 @@
+{
+    "NavigationLinks": [
+        {
+            "title": "Bank",
+            "href": "forms/bank"
+        },
+        {
+            "title": "Biller",
+            "href": "forms/biller"
+        },
+        {
+            "title": "Account",
+            "href": "forms/account"
+        },
+        {
+            "title": "Bill",
+            "href": "forms/bill"
+        },
+        {
+            "title": "Payment",
+            "href": "forms/payment"
+        }
+    ]
+}
+    
