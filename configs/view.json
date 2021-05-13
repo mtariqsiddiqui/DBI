@@ -1,0 +1,185 @@
+{
+    "Views": {
+        "enabled_view" : ["bank", "biller"],
+        "disabled_view" : [ "account", "bill", "payment"],
+        "bank": {
+            "form_title": "Bank Form",
+            "fields": [
+                {
+                    "label": "Bank Id",
+                    "id": "bankId",
+                    "name": "bankId",
+                    "type": "text",
+                    "required": "true"
+                },
+                {
+                    "label": "Bank Name",
+                    "id": "bankName",
+                    "name": "bankName",
+                    "type": "text",
+                    "required": "true"
+                },
+                {
+                    "label": "Branch Code",
+                    "id": "branchCode",
+                    "name": "branchCode",
+                    "type": "number",
+                    "required": "false"
+                }
+            ],
+            "setup_fields" : [
+                {
+                    "id": "api_url",
+                    "value": "/bank-api/"
+                },
+                {
+                    "id": "entity_container",
+                    "value": "bank,banks"
+                },
+                {
+                    "id": "entity_class",
+                    "value": "Banker"
+                }
+            ]
+        },
+        "biller": {
+            "form_title": "Biller Form",
+            "fields": [
+                {
+                    "label": "Biller Id",
+                    "id": "billerId",
+                    "name": "billerId",
+                    "type": "text",
+                    "required": "true"
+                },
+                {
+                    "label": "Biller Name",
+                    "id": "billerName",
+                    "name": "billerName",
+                    "type": "text",
+                    "required": "true"
+                },
+                {
+                    "label": "Bank Account Number",
+                    "id": "bankAccountNumber",
+                    "name": "bankAccountNumber",
+                    "type": "text",
+                    "required": "true"
+                }
+            ],
+            "setup_fields" : [
+                {
+                    "id": "api_url",
+                    "value": "/biller-api/"
+                },
+                {
+                    "id": "entity_container",
+                    "value": "biller,billers"
+                },
+                {
+                    "id": "entity_class",
+                    "value": "Biller"
+                }
+            ]
+        },
+        "account": {
+            "form_title": "Account Form",
+            "fields": [
+                {
+                    "label": "Account Id",
+                    "id": "accountId",
+                    "name": "accountId",
+                    "type": "text",
+                    "required": "true"
+                },
+                {
+                    "label": "Account Type",
+                    "id": "accountType",
+                    "name": "accountType",
+                    "type": "text",
+                    "required": "true"
+                },
+                {
+                    "label": "Account Number",
+                    "id": "accountNumber",
+                    "name": "accountNumber",
+                    "type": "text",
+                    "required": "true"
+                }
+            ]
+        },
+        "bill": {
+            "form_title": "Bill Form",
+            "fields": [
+                {
+                    "label": "Bill Id",
+                    "id": "billId",
+                    "name": "billId",
+                    "type": "text",
+                    "required": "true"
+                },
+                {
+                    "label": "Biller Id",
+                    "id": "billerId",
+                    "name": "billerId",
+                    "type": "text",
+                    "required": "true"
+                },
+                {
+                    "label": "Account Number",
+                    "id": "accountNumber",
+                    "name": "accountNumber",
+                    "type": "text",
+                    "required": "true"
+                },
+                {
+                    "label": "Bill Amount",
+                    "id": "billAmount",
+                    "name": "billAmount",
+                    "type": "number",
+                    "required": "true"
+                }
+            ]
+        },
+        "payment": {
+            "form_title": "Payment Form",
+            "fields": [
+                {
+                    "label": "Payment Id",
+                    "id": "paymentId",
+                    "name": "paymentId",
+                    "type": "text",
+                    "required": "true"
+                },
+                {
+                    "label": "Biller Id",
+                    "id": "billerId",
+                    "name": "billerId",
+                    "type": "text",
+                    "required": "true"
+                },
+                {
+                    "label": "Bill Id",
+                    "id": "billId",
+                    "name": "billId",
+                    "type": "text",
+                    "required": "true"
+                },
+                {
+                    "label": "Payment Amount",
+                    "id": "paymentAmount",
+                    "name": "paymentAmount",
+                    "type": "number",
+                    "required": "true"
+                },
+                {
+                    "label": "Bank Id",
+                    "id": "bankId",
+                    "name": "bankId",
+                    "type": "text",
+                    "required": "true"
+                }
+            ]
+        }
+    }
+}

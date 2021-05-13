@@ -15,6 +15,7 @@ import std.uni : toLower;
 __gshared DataSource _ds = new DataSource;
 __gshared enum auto cfg = parseJSON(import("model.json"));
 __gshared enum auto navcfg = parseJSON(import("navigation.json"));
+__gshared enum auto vucfg = parseJSON(import("view.json"));
 
 /// The getJsonValue function takes JSONValue object and return its value or _none for missing values.
 static string getJsonValue(JSONValue _obj, string key)

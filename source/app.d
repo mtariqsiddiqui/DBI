@@ -3,6 +3,7 @@ import std.array;
 import std.algorithm.iteration;
 import std.stdio;
 import std.json;
+import std.string;
 import controller.api;
 import templates;
 
@@ -16,7 +17,7 @@ void main()
 	auto router = new URLRouter;
 	// calls index function when / is accessed
 	router.get("/", &index);
-	// router.get("/public*", &testing);
+	router.get("/forms/*", &formsHandler);
 	// Serves files out of public folder
 	// router.get("*", serveStaticFiles("./public/"));
 
@@ -43,14 +44,8 @@ void index(HTTPServerRequest req, HTTPServerResponse res)
 }
 
 /// Rendering of Index URL
-void testing(HTTPServerRequest req, HTTPServerResponse res)
+void formsHandler(HTTPServerRequest req, HTTPServerResponse res)
 {
-	writeln(req.fullURL);
-	writeln(req.requestURL);
-	writeln(req.requestURI);
-	string view = req.requestURL;
-	import std.string;
-	view = chompPrefix(view, "/") ~ ".dt";
-	writeln(view);
-	res.render!("testing.dt");
+	string context = chompPrefix(req.requestURI, "/forms/");
+	res.render!("forms.dt", context);
 }

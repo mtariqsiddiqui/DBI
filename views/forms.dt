@@ -1,0 +1,36 @@
+extends layout.dt
+
+block master_body_part
+    - import controller.api; import std.algorithm; import std.json; import std.array;
+    - auto form_context = vucfg["Views"][context];
+    h3 #{getJsonValue(form_context, "form_title")}
+    form.row.g-3
+        input(id='__id', id='name', type='hidden')
+        - foreach (index, key; vucfg["Views"][context]["fields"].array.map!(item => item).array)
+            - string label = getJsonValue(key, "label"); 
+            - string id = getJsonValue(key, "id");
+            - string name = getJsonValue(key, "name");
+            - string type = getJsonValue(key, "type");
+            - string required = getJsonValue(key, "required");
+            .mb-3
+                label.form-label(for=id) #{label}
+                input.form-control(id=id, name=name, type=type, required=required)
+        .mb-3
+            input.btn.btn-primary(type='submit', value='Save')
+        - foreach (index, key; vucfg["Views"][context]["setup_fields"].array.map!(item => item).array)
+            - string id = getJsonValue(key, "id");
+            - string value = getJsonValue(key, "value");
+            input(id=id, value=value, type='hidden')
+
+block detail_body_part
+    .table-responsive
+        table.table.table-striped.table-bordered.table-hover#entity_table
+            thead
+                tr
+                    - foreach (index, key; vucfg["Views"][context]["fields"].array)
+                        - string label = getJsonValue(key, "label");
+                        // - string thid = "d_" ~ getJsonValue(key, "id") ;
+                        th(scope='col') #{label}
+                    th(scope='col', id='d__id') _ID
+                    th(scope='col') Action
+            tbody
