@@ -106,6 +106,20 @@
                     "type": "text",
                     "required": "true"
                 }
+            ],
+            "setup_fields" : [
+                {
+                    "id": "api_url",
+                    "value": "/account-api/"
+                },
+                {
+                    "id": "entity_container",
+                    "value": "account,accounts"
+                },
+                {
+                    "id": "entity_class",
+                    "value": "Account"
+                }
             ]
         },
         "bill": {

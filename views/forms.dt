@@ -4,8 +4,9 @@ block master_body_part
     - import controller.api; import std.algorithm; import std.json; import std.array;
     - auto form_context = vucfg["Views"][context];
     h3 #{getJsonValue(form_context, "form_title")}
-    form.row.g-3
-        input(id='__id', id='name', type='hidden')
+    form.row.g-3(method='POST', action='javascript:formSubmit();')
+        input(id='nRecFlag', value='false', type='hidden')
+        input(id='_id', name='_id', type='hidden')
         - foreach (index, key; vucfg["Views"][context]["fields"].array.map!(item => item).array)
             - string label = getJsonValue(key, "label"); 
             - string id = getJsonValue(key, "id");
@@ -17,6 +18,8 @@ block master_body_part
                 input.form-control(id=id, name=name, type=type, required=required)
         .mb-3
             input.btn.btn-primary(type='submit', value='Save')
+            input.btn.btn-primary(type='reset', value='Clear')
+
         - foreach (index, key; vucfg["Views"][context]["setup_fields"].array.map!(item => item).array)
             - string id = getJsonValue(key, "id");
             - string value = getJsonValue(key, "value");
@@ -29,7 +32,6 @@ block detail_body_part
                 tr
                     - foreach (index, key; vucfg["Views"][context]["fields"].array)
                         - string label = getJsonValue(key, "label");
-                        // - string thid = "d_" ~ getJsonValue(key, "id") ;
                         th(scope='col') #{label}
                     th(scope='col', id='d__id') _ID
                     th(scope='col') Action

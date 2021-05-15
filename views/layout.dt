@@ -4,7 +4,9 @@ html(lang="en")
         include ./includes/header.dt
     body
         include ./includes/sidebar.dt
-
+    .row
+        #notify_success.alert.alert-success.d-none(role='alert') This is success.
+        #notify_failure.alert.alert-danger.d-none(role='alert') This is failure.
     .row.p-5
         block master_body_part
             p No default content is provided.
