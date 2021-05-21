@@ -16,6 +16,7 @@ __gshared DataSource _ds = new DataSource;
 __gshared enum auto cfg = parseJSON(import("model.json"));
 __gshared enum auto navcfg = parseJSON(import("navigation.json"));
 __gshared enum auto vucfg = parseJSON(import("view.json"));
+__gshared enum auto dbcfg = parseJSON(import("dbconfig.json"));
 
 /// The getJsonValue function takes JSONValue object and return its value or _none for missing values.
 static string getJsonValue(JSONValue _obj, string key)
@@ -50,8 +51,8 @@ static string parseEntities()
 	return code;
 }
 
-pragma(msg, parseEntities());
-mixin(parseEntities()); // print parseEntities output to see the generated code
+pragma(msg, parseEntities()); // print parseEntities output to see the generated code
+mixin(parseEntities());
 // Parsing the configuration and creating REST API Interfaces and its Implementation classes during compilation
 static foreach (index, key; cfg["ModelNames"].array.map!(item => item).array)
 {

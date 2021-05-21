@@ -10,12 +10,21 @@ import std.typecons;
 
 import vibe.core.log;
 import vibe.db.mongo.mongo;
+import controller.api : dbcfg;
+
 
 // import vibe.db.mongo.settings;
 
 /// DataSource class for Application Database Handling
 class DataSource
 {
+    /// MongoDB Database hostname
+    static string _dbhost = dbcfg["mongodb_host"].str;
+    /// MongoDB Database port number
+    static ushort _dbport = to!ushort(dbcfg["mongodb_port"].integer);
+    /// MongoDB Database Name
+    static string _dbname = dbcfg["mongodb_database"].str;
+
     /// Prepare Bson Data from provided object for database CRUD operations
     Bson prepareBsonData(T)(T t)
     {
@@ -48,8 +57,8 @@ class DataSource
     Nullable!T fetchOne(T)(T t, string collection)
     {
         Bson b = prepareBsonData(t);
-        auto _client = connectMongoDB("127.0.0.1", 27017);
-        auto _db = _client.getDatabase("db1");
+        auto _client = connectMongoDB(_dbhost, _dbport);
+        auto _db = _client.getDatabase(_dbname);
 
         Nullable!T e = _db[collection].findOne!T(b);
         if (e.isNull)
@@ -63,8 +72,8 @@ class DataSource
         T[] ta;
         try
         {
-            auto _client = connectMongoDB("127.0.0.1", 27017);
-            auto _db = _client.getDatabase("db1");
+            auto _client = connectMongoDB(_dbhost, _dbport);
+            auto _db = _client.getDatabase(_dbname);
             foreach (e; _db[collection].find!T())
                 ta ~= e;
             _db.destroy();
@@ -82,8 +91,8 @@ class DataSource
         Bson bd = prepareBsonData!T(t);
         try
         {
-            auto _client = connectMongoDB("127.0.0.1", 27017);
-            auto _db = _client.getDatabase("db1");
+            auto _client = connectMongoDB(_dbhost, _dbport);
+            auto _db = _client.getDatabase(_dbname);
             _db[collection].insert(bd);
             _db.destroy();
             _client.destroy();
@@ -100,8 +109,8 @@ class DataSource
         Bson bd = prepareBsonData!T(t);
         try
         {
-            auto _client = connectMongoDB("127.0.0.1", 27017);
-            auto _db = _client.getDatabase("db1");
+            auto _client = connectMongoDB(_dbhost, _dbport);
+            auto _db = _client.getDatabase(_dbname);
         
             _db[collection].update(["_id" : t._id],bd, UpdateFlags.upsert);
             _db.destroy();
@@ -119,8 +128,8 @@ class DataSource
         Bson bd = prepareBsonData!T(t);
         try
         {
-            auto _client = connectMongoDB("127.0.0.1", 27017);
-            auto _db = _client.getDatabase("db1");
+            auto _client = connectMongoDB(_dbhost, _dbport);
+            auto _db = _client.getDatabase(_dbname);
             writeln(t._id);
             _db[collection].remove(["_id" : t._id]);
 

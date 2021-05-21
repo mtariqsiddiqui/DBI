@@ -35,10 +35,6 @@
                 {
                     "id": "entity_container",
                     "value": "bank,banks"
-                },
-                {
-                    "id": "entity_class",
-                    "value": "Banker"
                 }
             ]
         },
@@ -75,10 +71,6 @@
                 {
                     "id": "entity_container",
                     "value": "biller,billers"
-                },
-                {
-                    "id": "entity_class",
-                    "value": "Biller"
                 }
             ]
         },
@@ -115,10 +107,6 @@
                 {
                     "id": "entity_container",
                     "value": "account,accounts"
-                },
-                {
-                    "id": "entity_class",
-                    "value": "Account"
                 }
             ]
         },
@@ -152,6 +140,16 @@
                     "name": "billAmount",
                     "type": "number",
                     "required": "true"
+                }
+            ],
+            "setup_fields" : [
+                {
+                    "id": "api_url",
+                    "value": "/bill-api/"
+                },
+                {
+                    "id": "entity_container",
+                    "value": "bill,bills"
                 }
             ]
         },
@@ -192,6 +190,16 @@
                     "name": "bankId",
                     "type": "text",
                     "required": "true"
+                }
+            ],
+            "setup_fields" : [
+                {
+                    "id": "api_url",
+                    "value": "/payment-api/"
+                },
+                {
+                    "id": "entity_container",
+                    "value": "payment,payments"
                 }
             ]
         }
