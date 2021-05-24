@@ -54,6 +54,7 @@ class DataSource
         return b;
     }
 
+    /// Fetch only One document (record) from the MongoDB collection (table) for the matched _id or return Null
     Nullable!T fetchOne(T)(T t, string collection)
     {
         Bson b = prepareBsonData(t);
@@ -67,6 +68,7 @@ class DataSource
         return e;
     }
 
+    /// Fetch and return all the documents (records) from the given MongoDB collection (table)
     T[] fetchAll(T)(string collection)
     {
         T[] ta;
@@ -86,6 +88,7 @@ class DataSource
         return ta;
     }
 
+    /// Insert the document (record) for the given entity into the MongoDB collection (table)
     size_t insert(T)(T t, string collection)
     {
         Bson bd = prepareBsonData!T(t);
@@ -104,6 +107,7 @@ class DataSource
         return 0;
     }
 
+    /// Update the document (record) for the given entity into the MongoDB collection (table) for the matched _id
     size_t update(T)(T t, string collection)
     {
         Bson bd = prepareBsonData!T(t);
@@ -123,6 +127,7 @@ class DataSource
         return 0;
     }
 
+    /// Delete the document (record) for the given entity from the MongoDB collection (table) for the matched _id
     size_t remove(T)(T t, string collection)
     {
         Bson bd = prepareBsonData!T(t);
