@@ -41,12 +41,12 @@ class DataSource
             else
             {
                 // if member is type of Integer or Float and > 0 
-                enum string code2 = " static if(__traits(isArithmetic, typeof(t." ~ key ~ "))) " 
+                enum string code2 = " static if(__traits(isArithmetic, typeof(t." ~ key ~ "))) {" 
                     ~ " if(t." ~ key ~ " != 0) "
                     ~ " b[key] = t." ~ key ~ ";" 
-                    ~ " static if(isSomeString!(typeof(t." ~ key ~ ")) || isSomeChar!(typeof(t." ~ key ~ ")))"
+                    ~ "} else static if(isSomeString!(typeof(t." ~ key ~ ")) || isSomeChar!(typeof(t." ~ key ~ "))) {"
                     ~ " if(t." ~ key ~ " !is null) "
-                    ~ " b[key] = t." ~ key ~ ";";
+                    ~ " b[key] = t." ~ key ~ "; }";
                 // pragma(msg, code2);
                 mixin(code2);
             }
