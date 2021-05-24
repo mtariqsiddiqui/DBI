@@ -23,11 +23,11 @@ template ApiImplementation(string implName, string collection)
 		~ "e = _ds.fetchOne!" ~ implName ~ "(e, \"" ~ collection ~ "\"); \n" ~ "return e; } \n" 
 		~ implName ~ "[] get" ~ implName ~ "s() { \n" ~ implName ~ "[] e = _ds.fetchAll!" ~ implName ~ "(\"" ~ collection ~ "\"); \n return e; } \n" 
 		~ " void create" ~ implName ~ "(" ~ implName ~ " e) { \n writeln(\"create"~ implName~" >>\");\n" ~ 
-		"_ds.insert!" ~ implName ~ "(e, \"" ~ collection ~ "\"); \n /*return 0;*/ } \n" 
+		"_ds.insert!" ~ implName ~ "(e, \"" ~ collection ~ "\"); \n  } \n" 
 		~ " void update" ~ implName ~ "(" ~ implName ~ " e) { \n writeln(\"update"~ implName~" >>\");\n" ~
-		"_ds.update!" ~ implName ~ "(e, \"" ~ collection ~ "\"); \n /*return 0;*/ } \n" 
+		"_ds.update!" ~ implName ~ "(e, \"" ~ collection ~ "\"); \n  } \n" 
 		~ " void delete" ~ implName ~ "(" ~ implName ~ " e) { \n writeln(\"delete"~ implName~" >>\");\n" ~
-		"_ds.remove!" ~ implName ~ "(e, \"" ~ collection ~ "\"); \n /*return 0;*/ } \n } " ;
+		"_ds.remove!" ~ implName ~ "(e, \"" ~ collection ~ "\"); \n  } \n } " ;
 
 	pragma(msg, ApiImplementation);
 }
