@@ -16,7 +16,6 @@ template ApiInterface(string implName)
 /// Template for generation REST API interface implementation classes
 template ApiImplementation(string implName, string collection)
 {
-	// enum string collection = "banks";
 	enum string ApiImplementation = "class " ~ implName ~ "ApplicationInterfaceImplementation : " ~ implName ~ "ApplicationInterface \n" 
 		~ "{\n" 
 		~ implName ~ " get" ~ implName ~ "(string eid) { \n"
@@ -25,9 +24,9 @@ template ApiImplementation(string implName, string collection)
 		~ implName ~ "[] get" ~ implName ~ "s() { \n" ~ implName ~ "[] e = _ds.fetchAll!" ~ implName ~ "(\"" ~ collection ~ "\"); \n return e; } \n" 
 		~ " void create" ~ implName ~ "(" ~ implName ~ " e) { \n writeln(\"create"~ implName~" >>\");\n" ~ 
 		"_ds.insert!" ~ implName ~ "(e, \"" ~ collection ~ "\"); \n /*return 0;*/ } \n" 
-		~ " void update" ~ implName ~ "(" ~ implName ~ " e) { \n writeln(\"update"~ implName~" >>\"); \n" ~  
+		~ " void update" ~ implName ~ "(" ~ implName ~ " e) { \n writeln(\"update"~ implName~" >>\");\n" ~
 		"_ds.update!" ~ implName ~ "(e, \"" ~ collection ~ "\"); \n /*return 0;*/ } \n" 
-		~ " void delete" ~ implName ~ "(" ~ implName ~ " e) { \n writeln(\"delete"~ implName~" >>\"); \n" ~  
+		~ " void delete" ~ implName ~ "(" ~ implName ~ " e) { \n writeln(\"delete"~ implName~" >>\");\n" ~
 		"_ds.remove!" ~ implName ~ "(e, \"" ~ collection ~ "\"); \n /*return 0;*/ } \n } " ;
 
 	pragma(msg, ApiImplementation);

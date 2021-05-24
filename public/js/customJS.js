@@ -78,7 +78,6 @@ function backendHandler(method, url, nRecFlag) {
     }
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function () {
-        console.log("The nRecFlag is ", nRecFlag);
         if (this.readyState == 4 && this.status == 200) { // Success
             if (method === "GET") {
                 if (nRecFlag === 1) { // Only True in case of single record retreval
@@ -148,6 +147,7 @@ function populateFormWithData(jRec) {
 
 function clearFormData() {
     console.log("clearFormData >>");
+    displayMessage();
     document.getElementById('_id').value = '';
     document.querySelectorAll("input.form-control").forEach((el) => { el.value = ''; });
     console.log("clearFormData <<");
@@ -186,6 +186,7 @@ function populateTableWithData(jRec) {
 
 function formSubmit() {
     console.log("formSubmit >>", nRecFlag);
+    displayMessage();
     if(document.getElementsByTagName('form')[0].reportValidity()) {
         if(nRecFlag === 0){
             document.getElementById('_id').value = '';
@@ -194,7 +195,7 @@ function formSubmit() {
             updateRecord();
         }
     } else {
-        console.log("Please enter the correct data");
+        displayMessage('WARNING', 'Please enter the correct data.');
     }
     console.log("formSubmit <<");
 }
@@ -202,17 +203,24 @@ function formSubmit() {
 function displayMessage(messageType, messageText) {
     let dmes = document.getElementById("notify_success");
     let dmef = document.getElementById("notify_failure");
+    let dmew = document.getElementById("notify_warning");
     dmes.innerHTML = '';
     dmes.classList.add('d-none');
     dmef.innerHTML = '';
     dmef.classList.add('d-none');
+    dmew.innerHTML = '';
+    dmew.classList.add('d-none');
     if(messageType === 'SUCCESS') {
         dmes.innerHTML = messageText;
         dmes.classList.remove('d-none');
-        setTimeout(function(){ displayMessage(); }, 5000);
+        // var tmr = setTimeout(function(){ displayMessage(); }, 5000);
     } else if (messageType === 'FAILURE') {
         dmef.innerHTML = messageText;
         dmef.classList.remove('d-none');
-        setTimeout(function(){ displayMessage(); }, 5000);
+        // var tmr = setTimeout(function(){ displayMessage(); }, 5000);
+    } else if (messageType === 'WARNING') {
+        dmew.innerHTML = messageText;
+        dmew.classList.remove('d-none');
+        // var tmr = setTimeout(function(){ displayMessage(); }, 5000);
     }
 }

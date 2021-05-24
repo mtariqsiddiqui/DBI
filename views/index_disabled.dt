@@ -1,0 +1,11 @@
+
+extends layout.dt
+
+block master_body_part
+	.container.p-5
+		h4
+			|!= "This project is an artefact built against the research on <code>Design by Introspection</code> programming model. This project is developed using D programming language with <code>Vibe.d</code> framework for web development, utilising its metaprogramming capabilities including <code>templates, __traits, __ctfe</code> and some other compile time features, the project is using MongoDB database as its backend."
+		h5 Please select any module from side menu to interact with an application.        
+block detail_body_part
+	.container.p-5
+		h3 The #{ context } view is DISABLED.

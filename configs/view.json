@@ -1,7 +1,7 @@
 {
+    "enabled_views" : ["bank", "biller", "account", "bill", "payment"],
+    "disabled_views" : [],
     "Views": {
-        "enabled_view" : ["bank", "biller"],
-        "disabled_view" : [ "account", "bill", "payment"],
         "bank": {
             "form_title": "Bank Form",
             "fields": [

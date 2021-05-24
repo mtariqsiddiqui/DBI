@@ -10,7 +10,7 @@ import std.typecons;
 
 import vibe.core.log;
 import vibe.db.mongo.mongo;
-import controller.api : dbcfg;
+import apigenerator : dbcfg;
 
 
 // import vibe.db.mongo.settings;
@@ -40,7 +40,7 @@ class DataSource
             }
             else
             {
-                // if member is type of Integer or Float and > 0
+                // if member is type of Integer or Float and > 0 
                 enum string code2 = " static if(__traits(isArithmetic, typeof(t." ~ key ~ "))) " 
                     ~ " if(t." ~ key ~ " != 0) "
                     ~ " b[key] = t." ~ key ~ ";" 

@@ -1,4 +1,4 @@
-module controller.api;
+module apigenerator;
 
 import std.algorithm.iteration;
 import std.stdio;
@@ -27,6 +27,8 @@ static string getJsonValue(JSONValue _obj, string key)
 			return _key.get!string;
 		if (_key.type() == JSONType.integer)
 			return to!string(_key.get!int);
+		if (_key.type() == JSONType.float_)
+			return to!string(_key.get!float);
 		else
 			return "_none";
 	}
@@ -51,8 +53,9 @@ static string parseEntities()
 	return code;
 }
 
-pragma(msg, parseEntities()); // print parseEntities output to see the generated code
+pragma(msg, parseEntities());
 mixin(parseEntities());
+
 // Parsing the configuration and creating REST API Interfaces and its Implementation classes during compilation
 static foreach (index, key; cfg["ModelNames"].array.map!(item => item).array)
 {
