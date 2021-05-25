@@ -213,14 +213,11 @@ function displayMessage(messageType, messageText) {
     if(messageType === 'SUCCESS') {
         dmes.innerHTML = messageText;
         dmes.classList.remove('d-none');
-        // var tmr = setTimeout(function(){ displayMessage(); }, 5000);
     } else if (messageType === 'FAILURE') {
         dmef.innerHTML = messageText;
         dmef.classList.remove('d-none');
-        // var tmr = setTimeout(function(){ displayMessage(); }, 5000);
     } else if (messageType === 'WARNING') {
         dmew.innerHTML = messageText;
         dmew.classList.remove('d-none');
-        // var tmr = setTimeout(function(){ displayMessage(); }, 5000);
     }
 }
