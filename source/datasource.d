@@ -89,7 +89,7 @@ class DataSource
     }
 
     /// Insert the document (record) for the given entity into the MongoDB collection (table)
-    size_t insert(T)(T t, string collection)
+    void insert(T)(T t, string collection)
     {
         Bson bd = prepareBsonData!T(t);
         try
@@ -104,11 +104,10 @@ class DataSource
         {
             writeln("Mongo DB Exception occur. Message is " ~ e.message);
         }
-        return 0;
     }
 
     /// Update the document (record) for the given entity into the MongoDB collection (table) for the matched _id
-    size_t update(T)(T t, string collection)
+    void update(T)(T t, string collection)
     {
         Bson bd = prepareBsonData!T(t);
         try
@@ -124,11 +123,10 @@ class DataSource
         {
             writeln("Mongo DB Exception occur. Message is " ~ e.message);
         }
-        return 0;
     }
 
     /// Delete the document (record) for the given entity from the MongoDB collection (table) for the matched _id
-    size_t remove(T)(T t, string collection)
+    void remove(T)(T t, string collection)
     {
         Bson bd = prepareBsonData!T(t);
         try
@@ -145,6 +143,5 @@ class DataSource
         {
             writeln("Mongo DB Exception occur. Message is " ~ e.message);
         }
-        return 0;
     }
 }
