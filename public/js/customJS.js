@@ -27,11 +27,10 @@ function retreiveRecord(__id) {
         nRecFlag = 0;
         let url = document.getElementById("api_url").value + document.getElementById("entity_container").value.split(",")[1];
         backendHandler("GET", url, nRecFlag);
-    }
-    else {
+    } else {
         nRecFlag = 1;
-        let url = document.getElementById("api_url").value + document.getElementById("entity_container").value.split(",")[0] + "?eid=";
-        url = url + __id;
+        let url = document.getElementById("api_url").value + document.getElementById("entity_container").value.split(",")[0] 
+            + "?eid=" + __id;
         backendHandler("GET", url, nRecFlag);
     }
     console.log("retreiveRecord <<");
