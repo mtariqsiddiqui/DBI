@@ -14,3 +14,5 @@ Install MongoDB locally or use MongoDB Atlas cluster. The project is developed u
 Clone the Git repository https://github.com/mtariqsiddiqui/DBI.git
 
 Type dub run from the repository main directory to run the project. The dub is the default build tool for the D language, and it is installed with the DMD compiler. Browse the website http://127.0.0.1:3000/ using any modern browser. The project is devel-oped using Google Chrome but also tested on Safari latest versions.
+
+For Windwos Operating System, remove "subConfigurations": { "vibe-d:tls": "openssl-1.1" } fom dub.json and type dub run command.
