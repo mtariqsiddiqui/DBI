@@ -1,24 +1,20 @@
 {
     "NavigationLinks": [
         {
-            "title": "Bank",
-            "href": "/forms/bank"
+            "title": "Partner",
+            "href": "/forms/partner"
         },
         {
-            "title": "Biller",
-            "href": "/forms/biller"
+            "title": "Configuration",
+            "href": "/forms/configuration"
         },
         {
-            "title": "Account",
-            "href": "/forms/account"
+            "title": "Config Attributes",
+            "href": "/forms/configuration_attribute"
         },
         {
-            "title": "Bill",
-            "href": "/forms/bill"
-        },
-        {
-            "title": "Payment",
-            "href": "/forms/payment"
+            "title": "Partner Configurations",
+            "href": "/forms/partner_configuration"
         }
     ]
 }

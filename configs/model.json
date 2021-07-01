@@ -1,109 +1,102 @@
 {
     "ModelNames": [
-        "Bank",
-        "Biller",
-        "Account",
-        "Bill",
-        "Payment"
+        "Partner",
+        "Configuration",
+        "ConfigAttribute",
+        "PartnerConfiguration"
     ],
-    "Bank": {
-        "collection_name" : "banks",
+    "Partner": {
+        "collection_name" : "partners",
         "entity_type": "struct",
         "fields": [
             {
-                "name": "bankId",
+                "name": "partnerId",
                 "type": "string"
             },
             {
-                "name": "bankName",
+                "name": "partnerName",
                 "type": "string"
             },
             {
-                "name": "branchCode",
-                "type": "int"
-            }
-        ]
-    },
-    "Biller": {
-        "collection_name" : "billers",
-        "entity_type": "struct",
-        "fields": [
-            {
-                "name": "billerId",
+                "name": "partnerDesc",
                 "type": "string"
             },
             {
-                "name": "billerName",
-                "type": "string"
-            },
-            {
-                "name": "bankAccountNumber",
+                "name": "partnerStatus",
                 "type": "string"
             }
         ]
     },
-    "Account": {
-        "collection_name" : "accounts",
+    "Configuration": {
+        "collection_name" : "config",
         "entity_type": "struct",
         "fields": [
             {
-                "name": "accountId",
+                "name": "configId",
                 "type": "string"
             },
             {
-                "name": "accountType",
+                "name": "configName",
                 "type": "string"
             },
             {
-                "name": "accountNumber",
+                "name": "configDesc",
                 "type": "string"
             }
         ]
     },
-    "Bill": {
-        "collection_name" : "bills",
+    "ConfigAttribute": {
+        "collection_name" : "config_attrib",
         "entity_type": "struct",
         "fields": [
             {
-                "name": "billId",
+                "name": "attribId",
                 "type": "string"
             },
             {
-                "name": "billerId",
+                "name": "attribName",
                 "type": "string"
             },
             {
-                "name": "accountNumber",
+                "name": "attribDesc",
                 "type": "string"
             },
             {
-                "name": "billAmount",
-                "type": "int"
+                "name": "attribDefaultValue",
+                "type": "string"
+            },
+            {
+                "name": "configId",
+                "type": "string"
             }
         ]
     },
-    "Payment": {
-        "collection_name" : "payments",
+    "PartnerConfiguration": {
+        "collection_name" : "partner_config",
         "entity_type": "struct",
         "fields": [
             {
-                "name": "paymentId",
+                "name": "pConfId",
                 "type": "string"
             },
             {
-                "name": "billerId",
+                "name": "partnerId",
                 "type": "string"
             },
             {
-                "name": "billId",
+                "name": "configId",
                 "type": "string"
             },
             {
-                "name": "paymentAmount",
-                "type": "int"
+                "name": "attribId",
+                "type": "string"
             },
             {
-                "name": "bankId",
+                "name": "pAttribValue",
+                "type": "string"
+            },
+            {
+                "name": "status",
                 "type": "string"
             }
         ]

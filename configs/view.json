@@ -1,64 +1,71 @@
 {
-    "enabled_views" : ["bank", "biller", "account", "bill", "payment"],
+    "enabled_views" : ["partner", "configuration", "configuration_attribute", "partner_configuration"],
     "disabled_views" : [],
     "Views": {
-        "bank": {
-            "form_title": "Bank Form",
+        "partner": {
+            "form_title": "Partner Form",
             "fields": [
                 {
-                    "label": "Bank Id",
-                    "id": "bankId",
-                    "name": "bankId",
+                    "label": "Partner Id",
+                    "id": "partnerId",
+                    "name": "partnerId",
                     "type": "text",
                     "required": "true"
                 },
                 {
-                    "label": "Bank Name",
-                    "id": "bankName",
-                    "name": "bankName",
+                    "label": "Partner Name",
+                    "id": "partnerName",
+                    "name": "partnerName",
                     "type": "text",
                     "required": "true"
                 },
                 {
-                    "label": "Branch Code",
-                    "id": "branchCode",
-                    "name": "branchCode",
-                    "type": "number",
+                    "label": "Partner Description",
+                    "id": "partnerDesc",
+                    "name": "partnerDesc",
+                    "type": "text",
                     "required": "false"
+                },
+                {
+                    "label": "Partner Status",
+                    "id": "partnerStatus",
+                    "name": "partnerStatus",
+                    "type": "static_dropdown --> [{active, Active}, {inactive, In Active}] ",
+                    "required": "true"
                 }
             ],
             "setup_fields" : [
                 {
                     "id": "api_url",
-                    "value": "/bank-api/"
+                    "value": "/partner-api/"
                 },
                 {
                     "id": "entity_container",
-                    "value": "bank,banks"
+                    "value": "parnter,partners"
                 }
             ]
         },
-        "biller": {
-            "form_title": "Biller Form",
+        "configuration": {
+            "form_title": "Configuration Form",
             "fields": [
                 {
-                    "label": "Biller Id",
-                    "id": "billerId",
-                    "name": "billerId",
+                    "label": "Configuration Id",
+                    "id": "configId",
+                    "name": "configId",
                     "type": "text",
                     "required": "true"
                 },
                 {
-                    "label": "Biller Name",
-                    "id": "billerName",
-                    "name": "billerName",
+                    "label": "Configuaton Name",
+                    "id": "configName",
+                    "name": "configName",
                     "type": "text",
                     "required": "true"
                 },
                 {
-                    "label": "Bank Account Number",
-                    "id": "bankAccountNumber",
-                    "name": "bankAccountNumber",
+                    "label": "Description",
+                    "id": "configDesc",
+                    "name": "configDesc",
                     "type": "text",
                     "required": "true"
                 }
@@ -66,35 +73,35 @@
             "setup_fields" : [
                 {
                     "id": "api_url",
-                    "value": "/biller-api/"
+                    "value": "/config-api/"
                 },
                 {
                     "id": "entity_container",
-                    "value": "biller,billers"
+                    "value": "configuration,configurations"
                 }
             ]
         },
-        "account": {
-            "form_title": "Account Form",
+        "configuration_attribute": {
+            "form_title": "Configuration Attribute Form",
             "fields": [
                 {
-                    "label": "Account Id",
-                    "id": "accountId",
-                    "name": "accountId",
+                    "label": "Attribute Id",
+                    "id": "attribId",
+                    "name": "attribId",
                     "type": "text",
                     "required": "true"
                 },
                 {
-                    "label": "Account Type",
-                    "id": "accountType",
-                    "name": "accountType",
+                    "label": "Attribute Name",
+                    "id": "attribName",
+                    "name": "attribName",
                     "type": "text",
                     "required": "true"
                 },
                 {
-                    "label": "Account Number",
-                    "id": "accountNumber",
-                    "name": "accountNumber",
+                    "label": "Default Value",
+                    "id": "attribDefaultValue",
+                    "name": "attribDefaultValue",
                     "type": "text",
                     "required": "true"
                 }
@@ -102,104 +109,54 @@
             "setup_fields" : [
                 {
                     "id": "api_url",
-                    "value": "/account-api/"
+                    "value": "/confattrib-api/"
                 },
                 {
                     "id": "entity_container",
-                    "value": "account,accounts"
+                    "value": "ConfigAttribute,ConfigAttributes"
                 }
             ]
         },
-        "bill": {
-            "form_title": "Bill Form",
+        "partner_configuration": {
+            "form_title": "Partner Configuration Form",
             "fields": [
                 {
-                    "label": "Bill Id",
-                    "id": "billId",
-                    "name": "billId",
+                    "label": "Partner Configuration Id",
+                    "id": "pConfId",
+                    "name": "pConfId",
                     "type": "text",
                     "required": "true"
                 },
                 {
-                    "label": "Biller Id",
-                    "id": "billerId",
-                    "name": "billerId",
-                    "type": "text",
+                    "label": "Partner Id",
+                    "id": "partnerId",
+                    "name": "partnerId",
+                    "type": "lookup --> [partners {partnerId, partnerName}]",
                     "required": "true"
                 },
                 {
-                    "label": "Account Number",
-                    "id": "accountNumber",
-                    "name": "accountNumber",
-                    "type": "text",
+                    "label": "Configuration",
+                    "id": "configId",
+                    "name": "configId",
+                    "type": "lookup --> [config{configId,configName}]",
                     "required": "true"
                 },
                 {
-                    "label": "Bill Amount",
-                    "id": "billAmount",
-                    "name": "billAmount",
-                    "type": "number",
+                    "label": "Attribute",
+                    "id": "attribId",
+                    "name": "attribId",
+                    "type": "lookup --> [config_attrib{attribId,attribName}(configId)]",
                     "required": "true"
                 }
             ],
             "setup_fields" : [
                 {
                     "id": "api_url",
-                    "value": "/bill-api/"
+                    "value": "/pconf-api/"
                 },
                 {
                     "id": "entity_container",
-                    "value": "bill,bills"
-                }
-            ]
-        },
-        "payment": {
-            "form_title": "Payment Form",
-            "fields": [
-                {
-                    "label": "Payment Id",
-                    "id": "paymentId",
-                    "name": "paymentId",
-                    "type": "text",
-                    "required": "true"
-                },
-                {
-                    "label": "Biller Id",
-                    "id": "billerId",
-                    "name": "billerId",
-                    "type": "text",
-                    "required": "true"
-                },
-                {
-                    "label": "Bill Id",
-                    "id": "billId",
-                    "name": "billId",
-                    "type": "text",
-                    "required": "true"
-                },
-                {
-                    "label": "Payment Amount",
-                    "id": "paymentAmount",
-                    "name": "paymentAmount",
-                    "type": "number",
-                    "required": "true"
-                },
-                {
-                    "label": "Bank Id",
-                    "id": "bankId",
-                    "name": "bankId",
-                    "type": "text",
-                    "required": "true"
-                }
-            ],
-            "setup_fields" : [
-                {
-                    "id": "api_url",
-                    "value": "/payment-api/"
-                },
-                {
-                    "id": "entity_container",
-                    "value": "payment,payments"
+                    "value": "PartnerConfiguration,PartnerConfigurations"
                 }
             ]
         }

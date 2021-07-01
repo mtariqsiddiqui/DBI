@@ -1,3 +1,5 @@
+module app;
+
 import vibe.d;
 import std.array;
 import std.algorithm.iteration;
