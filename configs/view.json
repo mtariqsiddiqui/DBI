@@ -73,7 +73,7 @@
             "setup_fields" : [
                 {
                     "id": "api_url",
-                    "value": "/config-api/"
+                    "value": "/configuration-api/"
                 },
                 {
                     "id": "entity_container",
@@ -109,11 +109,11 @@
             "setup_fields" : [
                 {
                     "id": "api_url",
-                    "value": "/confattrib-api/"
+                    "value": "/configattribute-api/"
                 },
                 {
                     "id": "entity_container",
-                    "value": "ConfigAttribute,ConfigAttributes"
+                    "value": "configattribute,configattributes"
                 }
             ]
         },
@@ -152,11 +152,11 @@
             "setup_fields" : [
                 {
                     "id": "api_url",
-                    "value": "/pconf-api/"
+                    "value": "/partnerconfiguration-api/"
                 },
                 {
                     "id": "entity_container",
-                    "value": "PartnerConfiguration,PartnerConfigurations"
+                    "value": "partnerconfiguration,partnerconfigurations"
                 }
             ]
         }
